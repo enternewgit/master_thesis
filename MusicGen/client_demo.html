@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>LyriaRealTime Proxy Demo</title>
+  <style>body{font-family:system-ui,Segoe UI,Arial,sans-serif;padding:1rem}#log{white-space:pre-wrap;border:1px solid #ddd;padding:0.5rem;height:240px;overflow:auto}</style>
+</head>
+<body>
+  <h2>LyriaRealTime Proxy Demo</h2>
+  <p>Connects to the local proxy at <code>ws://localhost:8765/</code> and exchanges text messages.</p>
+
+  <div>
+    <label>Message: <input id="msg" value='{"type":"test","payload":"hello"}' size="40"></label>
+    <button id="sendBtn" disabled>Send</button>
+    <button id="connectBtn">Connect</button>
+    <button id="disconnectBtn" disabled>Disconnect</button>
+  </div>
+  <h3>Log</h3>
+  <div id="log"></div>
+
+  <script>
+    const logEl = document.getElementById('log')
+    function log(...args){ logEl.textContent += args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ') + '\n'; logEl.scrollTop = logEl.scrollHeight }
+
+    let ws = null
+    const connectBtn = document.getElementById('connectBtn')
+    const disconnectBtn = document.getElementById('disconnectBtn')
+    const sendBtn = document.getElementById('sendBtn')
+    const msgInput = document.getElementById('msg')
+
+    connectBtn.onclick = () => {
+      if(ws) return
+      const url = 'ws://localhost:8765/'
+      log('Connecting to', url)
+      ws = new WebSocket(url)
+      ws.onopen = ()=>{ log('Connected'); sendBtn.disabled = false; disconnectBtn.disabled = false; connectBtn.disabled = true }
+      ws.onmessage = (ev)=>{ log('Recv:', ev.data) }
+      ws.onclose = (ev)=>{ log('Closed', ev.code, ev.reason); ws=null; sendBtn.disabled=true; disconnectBtn.disabled=true; connectBtn.disabled=false }
+      ws.onerror = (ev)=>{ log('Error', ev) }
+    }
+
+    disconnectBtn.onclick = ()=>{ if(ws){ ws.close(); ws=null } }
+
+    sendBtn.onclick = ()=>{
+      if(!ws || ws.readyState !== WebSocket.OPEN){ log('Socket not open'); return }
+      const payload = msgInput.value
+      log('Send:', payload)
+      ws.send(payload)
+    }
+  </script>
+</body>
+</html>

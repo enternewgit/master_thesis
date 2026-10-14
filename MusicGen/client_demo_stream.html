@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>PCM Streaming Demo</title>
+  </head>
+  <body>
+    <h3>PCM Streaming Demo (WebSocket)</h3>
+    <button id="start">Start</button>
+    <script>
+      const startBtn = document.getElementById('start');
+      startBtn.onclick = async () => {
+        const ws = new WebSocket('ws://' + location.host + '/generate/ws');
+        let sampleRate = 44100;
+        let channels = 2;
+        let dtype = 'float32';
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let playTime = audioCtx.currentTime + 0.1; // schedule slightly ahead
+
+        ws.binaryType = 'arraybuffer';
+        ws.onopen = () => {
+          const params = { length_seconds: 30, sample_rate: 44100, channels: 2, segment_seconds: 5 };
+          ws.send(JSON.stringify(params));
+          console.log('Sent params', params);
+        };
+
+        ws.onmessage = async (ev) => {
+          if (typeof ev.data === 'string') {
+            const msg = JSON.parse(ev.data);
+            if (msg.type === 'format') {
+              sampleRate = msg.sample_rate;
+              channels = msg.channels;
+              dtype = msg.dtype;
+              console.log('Format', msg);
+              return;
+            }
+            if (msg.type === 'end') {
+              console.log('Stream end', msg.meta);
+              return;
+            }
+            if (msg.type === 'error') {
+              console.error('Server error', msg.msg);
+              return;
+            }
+          }
+
+          // バイナリPCMを受け取って再生
+          if (ev.data instanceof ArrayBuffer) {
+            const ab = ev.data;
+            const floatData = new Float32Array(ab);
+            // channels が 1 or 2 の想定。受け取った配列は interleaved ではなく、
+            // 本実装ではチャネルが分かれている場合 stacked されているため、
+            // ここでは簡潔のためチャンネル毎に分ける処理を行う。
+            const frames = floatData.length / channels;
+            const audioBuffer = audioCtx.createBuffer(channels, frames, sampleRate);
+            if (channels === 1) {
+              audioBuffer.getChannelData(0).set(floatData);
+            } else {
+              // 本デモのサーバはチャンネル列が [ [L],[R] ] のstackされた2列で送られている
+              // 受け取り側では interleaved を想定するケースが多いため、ここで分解して各チャンネルへコピー
+              // もしサーバが interleaved を送るなら、この処理は不要
+              for (let c = 0; c < channels; c++) {
+                const ch = audioBuffer.getChannelData(c);
+                for (let i = 0; i < frames; i++) {
+                  ch[i] = floatData[i * channels + c];
+                }
+              }
+            }
+
+            const src = audioCtx.createBufferSource();
+            src.buffer = audioBuffer;
+            src.connect(audioCtx.destination);
+            src.start(playTime);
+            playTime += audioBuffer.duration;
+          }
+        };
+
+        ws.onclose = () => console.log('ws closed');
+        ws.onerror = (e) => console.error('ws error', e);
+      };
+    </script>
+  </body>
+  </html>

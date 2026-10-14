@@ -1,0 +1,34 @@
+import dynamic from "next/dynamic";
+
+const EEGForm = dynamic(() => import("./EEGForm"), { ssr: false });
+const MusicComponent = dynamic(() => import("../[locale]/components/Music"), { ssr: false });
+
+export default function Page() {
+  return (
+    <main style={{ padding: 20 }}>
+      <h1>EEG Emotion Estimation</h1>
+      <p>Paste EEG samples as a JSON array (channels × time) and press predict.</p>
+
+      <div style={{ display: "flex", gap: 24, alignItems: "flex-start" }}>
+        <div style={{ flex: 1, minWidth: 320 }}>
+          <section style={{ marginBottom: 16 }}>
+            <h2>EEG Measurement / Graph</h2>
+            <div style={{ border: "1px solid #ddd", padding: 12, borderRadius: 6, minHeight: 160 }}>
+              {/* If you have an actual EEG graph component, replace this placeholder */}
+              <div style={{ color: "#666" }}>EEG graph & measurement UI goes here.</div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Manual Input / Predict</h2>
+            <EEGForm />
+          </section>
+        </div>
+
+        <aside style={{ width: 420 }}>
+          <MusicComponent />
+        </aside>
+      </div>
+    </main>
+  );
+}

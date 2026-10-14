@@ -1,0 +1,23 @@
+{
+    "muse": {
+        "Connect Muse": "Connect Muse",
+        "Muse Connection": "Muse Connection",
+        "Connect to the EEG device (Muse only) and start streaming": "Connect to the EEG device (Muse only) and start streaming.",
+        "No data received":"No data received. Please check your device and reconnect.",
+        "Connect": "Connect",
+        "Disconnect": "Disconnect",
+        "Start": "Start",
+        "Stop": "Stop",
+        "Duration": "Duration",
+        "NotchFilterFrequency": "Notch Filter Frequency",
+        "Interval": "Interval",
+        "BandpassFilter": "Bandpass Filter",
+        "NotchFilter": "Notch Filter",
+        "CutOffLow": "CutOffLow",
+        "CutOffHigh": "CutOffHigh",
+        "FFT": "FFT",
+        "Display monitor": "Display monitor",
+        "Hide monitor": "Hide monitor"
+    }
+  }
+  

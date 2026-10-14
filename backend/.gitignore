@@ -1,0 +1,25 @@
+#python cashe
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.bkp
+
+.python-version
+poetry.lock
+
+criterion.pt
+history.json
+optimizer.pt
+label_encoder.joblib
+*best_model.pt
+
+.env
+word_haku_api/routers/eeg2word/*.pth
+
+# デモに必要なモデル重み(サイズ確認済み、上記の除外の例外として追跡)
+!word_haku_api/routers/eeg2word/best_model.pth
+!word_haku_api/routers/eeg2word/best_model_YesNo.pth
+!word_haku_api/routers/eeg2word/best_model.pt
+!word_haku_api/routers/eeg2word/best_model5.pt
+!word_haku_api/routers/eeg2word/best_model_EEGNetWithAttention.pth

@@ -1,0 +1,12 @@
+# Local inference dependencies (note: torch/torchaudio wheel must match your CUDA/CPU)
+# Install torch first (choose CPU or CUDA wheel):
+# CPU example:
+#   .venv/bin/python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+# CUDA example (adjust cu### to your CUDA version):
+#   .venv/bin/python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+stable-audio-tools
+einops
+# torchaudio is usually bundled with the torch wheel; install separately if needed
+
+# Note: install these with your virtualenv's python/pip (e.g. .venv/bin/python3 -m pip install -r requirements-local.txt)

@@ -1,0 +1,22 @@
+{
+  "muse": {
+    "Connect Muse": "Muse接続",
+    "Muse Connection": "Muse接続設定",
+    "Connect to the EEG device (Muse only) and start streaming": "EEG計測デバイス（Muse限定）に接続し、リアルタイム計測を開始します。",
+    "No data received": "データが受信されていません。デバイスを確認して、もう一度再接続してください。",
+    "Connect": "接続",
+    "Disconnect": "切断",
+    "Start": "開始",
+    "Stop": "停止",
+    "Duration": "計測周波数",
+    "Interval": "送信間隔",
+    "NotchFilterFrequency": "ノッチフィルタ周波数",
+    "BandpassFilter": "バンドパスフィルタ",
+    "NotchFilter": "ノッチフィルタ",
+    "CutOffLow": "低周波カット",
+    "CutOffHigh": "高周波カット",
+    "FFT": "高速フーリエ変換",
+    "Display monitor": "モニターを表示",
+    "Hide monitor": "モニターを非表示"
+  }
+}
