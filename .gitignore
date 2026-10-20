@@ -185,6 +185,10 @@ analysis_results/
 !models/
 !models/valence.pth
 !models/arousal.pth
+!models/prod_Mamba_Bi_4ch_Valence.pth
+!models/prod_Mamba_Bi_4ch_Arousal.pth
+!models/prod_Mamba_Bi_4ch_Valence_stats.joblib
+!models/prod_Mamba_Bi_4ch_Arousal_stats.joblib
 !backend/word_haku_api/routers/eeg2word/best_model.pth
 !backend/word_haku_api/routers/eeg2word/best_model_YesNo.pth
 !backend/word_haku_api/routers/eeg2word/best_model.pt
