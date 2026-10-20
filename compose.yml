@@ -1,10 +1,34 @@
 services:
   backend:
+    volumes:
+      - ./models:/models:ro
+    #env_file: ./backend/.env
     build: ./backend
     ports:
       - "8001:8001"
     environment:
+      PYTHONUNBUFFERED: "1"
+      EMOTION_MODEL_DIR: /models
+      EMO_VALENCE_PATH: /models/valence.pth
+      EMO_AROUSAL_PATH: /models/arousal.pth
       FRONTEND_URL: "http://localhost:3001"
+      MRT2_SERVER_URL: "http://mrt2:8799"
+    depends_on:
+      mrt2:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  mrt2:
+    build: ./mrt2_poc
+    command: ["--model", "mrt2_small", "--port", "8799", "--host", "0.0.0.0"]
+    volumes:
+      - mrt2-models:/root/Documents/Magenta/magenta-rt-v2
     deploy:
       resources:
         reservations:
@@ -14,8 +38,15 @@ services:
               capabilities: [gpu]
 
   frontend:
+    #env_file: ./frontend/.env
     build: ./frontend
     ports:
       - "3001:3001"
     depends_on:
       - backend
+
+volumes:
+  mrt2-models:
+    # 以前 docker run で作成・ダウンロード済みのボリュームを再利用する
+    name: mrt2-models
+    external: true

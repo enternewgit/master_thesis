@@ -21,7 +21,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "types": [
       "react",
       "react-dom"
@@ -38,7 +38,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/my/page.tsx.bkp"
+    "src/app/my/page.tsx.bkp",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
