@@ -119,14 +119,14 @@ logs/
 
 # ML / model checkpoints (PyTorch, etc.)
 *.pt
-*.pth
+#*.pth
 best_model*
-model*
+#model*
 *.ckpt
 
 # Jupyter
-.ipynb_checkpoints/
-*.ipynb
+#.ipynb_checkpoints/
+#*.ipynb
 
 # Node / Next.js
 node_modules/
